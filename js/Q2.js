@@ -79,11 +79,29 @@ class Hero extends BaseCharacter{
     this.updateHtml(this.hpElement, this.hurtElement);
   }
 
-  heal(){
-    this.hp += 30;
+  getHeal(heal){
+    this.hp += heal;
     if (this.hp > this.maxHp){
       this.hp = this.maxHp;
     }
+
+    var _this = this;
+    var i = 1;
+    _this.id = setInterval(function(){
+      if (i == 1){
+        _this.element.getElementsByClassName("heal-text")[0].classList.add("healed") ;
+        _this.element.getElementsByClassName("heal-text")[0].textContent = heal;
+      }
+      i ++;
+      if (i > 8){
+        _this.element.getElementsByClassName("heal-text")[0].classList.remove("healed");
+        _this.element.getElementsByClassName("heal-text")[0].textContent = "";
+        clearInterval(_this.id);
+      }
+
+
+    },50);
+
     this.updateHtml(this.hpElement, this.hurtElement);
   }
 
@@ -164,7 +182,7 @@ function heroAttack(){
 
 function heroHeal(){
   document.getElementsByClassName("skill-block")[0].style.display = "none";
-  hero.heal();
+  hero.getHeal(30);
 
   setTimeout(function(){
     if (monster.alive){
